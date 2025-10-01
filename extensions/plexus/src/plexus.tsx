@@ -4,7 +4,7 @@ import { LocalhostItem } from "./types/LocalhostItem";
 import { getLocalhostItems } from "./services/localhostService";
 import { useServiceIcon, usePageTitle } from "./utils/webHooks";
 import { createDisplayName, getProjectName } from "./utils/projectUtils";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 
 export default function Command() {
   const [items, setItems] = useState<LocalhostItem[]>([]);
@@ -66,7 +66,7 @@ function LocalhostListItem({ item, onActionComplete }: { item: LocalhostItem; on
         title: `Terminating process ${item.pid}...`,
       });
 
-      exec(`kill ${item.pid}`, (error) => {
+      execFile(`kill`, [item.pid], (error) => {
         if (error) {
           toast.style = Toast.Style.Failure;
           toast.title = `Failed to kill process ${item.pid}`;
